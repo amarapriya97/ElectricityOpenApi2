@@ -1,87 +1,120 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  version: 1.0.0
-  title: Gas and Electricity Estimate
-  description: Gives an estimate as to how much usage of gas and electricity services for a particular customer.   
-host: private-333802-estimate.apiary-mock.com
-basePath: /api
+  version: '1.0'
+  title: "GetAccountDetails"
+  description: Polls is a simple API allowing consumers to view polls and vote in them.
+  license:
+    name: MIT
+    url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
+host: polls.apiblueprint.org
+basePath: /
 schemes:
-  - http
+- http
 consumes:
-  - application/json
+- application/json
 produces:
-  - application/json
+- application/json
 paths:
-  /estimate/4859634:
-    x-summary: Estimate Next Month 4859634
-    x-description: |
-        Returns gas and electricity estimate for the next month for the account number: 4859634. 
+  /questions:
+    x-summary: Questions Collection
     get:
+      summary: List All Questions
       responses:
         200:
-          description: Gas & Electricity estimate for the next month
+          description: Successful Response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Question'
           examples:
             application/json:
-                [
-			{
-					"account_number": "4859634",
-					"name": "Darko",
-					"gas_estimate_Estimate": "32,000 Btu",
-					"gas_estimate_cost": "¥ 63,322",
-					"electricity_estimate_Estimate": "5,325 kW",
-					"electricity_estimate_cost": "¥ 18,324",
-					"environment": "Japan 1"								
-			}
-		]
+              - question: Favourite programming language?
+                published_at: '2015-08-05T08:40:51.620Z'
+                choices:
+                  - choice: Swift
+                    votes: 2048
+                  - choice: Python
+                    votes: 1024
+                  - choice: Objective-C
+                    votes: 512
+                  - choice: Ruby
+                    votes: 256
+    post:
+      description: >-
+        You may create your own question using this action. It takes a JSON
+        object containing a question and a collection of answers in the
+        form of choices.
+      summary: Create a New Question
+      parameters:
+        - name: body
+          in: body
+          required: true
           schema:
-            $ref: '#/definitions/Estimate'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    
-   
-  /estimate/5845241:
-    x-summary: Estimate Next Month 5845241
-    x-description: |
-        Returns gas and electricity Estimate of current month for the account number: 5845241.     
-    get:
+            $ref: '#/definitions/QuestionRequest'
       responses:
-        200:
-          description: Gas & Electricity Estimate response for current month
+        201:
+          description: ''
+          schema:
+            $ref: '#/definitions/Question'
           examples:
             application/json:
-                [
-        					{
-								"account_number": "5845241",
-								"name": "John",
-								"gas_estimate_usage": "480,000 Btu",
-								"gas_estimate_cost": "¥ 306,424",
-								"electricity_estimate_usage": "0 kW",
-								"electricity_estimate_cost": "¥ 0",
-								"environment": "Japan 1"								
-        					}
-        				]
-          schema:
-            $ref: '#/definitions/Estimate'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'                 
+                question: Favourite programming language?
+                published_at: '2015-08-05T08:40:51.620Z'
+                choices:
+                  - choice: Swift
+                    votes: 0
+                  - choice: Python
+                    votes: 0
+                  - choice: Objective-C
+                    votes: 0
+                  - choice: Ruby
+                    votes: 0
 definitions:
-  Estimate:
-    required:
-      - account_number
+  Question:
+    title: Question
+    type: object
     properties:
-      account_number:
+      question:
         type: string
-  Error:
+      published_at:
+        type: string
+      choices:
+        type: array
+        items:
+          $ref: '#/definitions/Choice'
     required:
-      - code
-      - message
+      - question
+      - published_at
+      - choices
+  Choice:
+    title: Choice
+    type: object
     properties:
-      code:
+      votes:
         type: integer
         format: int32
-      message:
+      choice:
         type: string
+    required:
+      - votes
+      - choice
+  QuestionRequest:
+    title: Question Request
+    type: object
+    properties:
+      question:
+        type: string
+      choices:
+        type: array
+        items:
+          type: string
+    required:
+      - question
+      - choices
+    example:
+      question: Favourite programming language?
+      choices:
+        - Swift
+        - Python
+        - Objective-C
+        - Ruby

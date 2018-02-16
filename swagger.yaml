@@ -23,16 +23,16 @@ paths:
           examples:
             application/json:
                 [
-        					{
-								"account_number": "4859634",
-								"name": "Darko",
-								"gas_estimate_Estimate": "32,000 Btu",
-								"gas_estimate_cost": "¥ 63,322",
-								"electricity_estimate_Estimate": "5,325 kW",
-								"electricity_estimate_cost": "¥ 18,324",
-								"environment": "Japan 1"								
-        					}
-        				]
+			{
+					"account_number": "4859634",
+					"name": "Darko",
+					"gas_estimate_Estimate": "32,000 Btu",
+					"gas_estimate_cost": "¥ 63,322",
+					"electricity_estimate_Estimate": "5,325 kW",
+					"electricity_estimate_cost": "¥ 18,324",
+					"environment": "Japan 1"								
+			}
+		]
           schema:
             $ref: '#/definitions/Estimate'
         default:
